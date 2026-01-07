@@ -6,7 +6,6 @@
     <title>Holy Screen - Ethiopian Saints Wallpapers</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
-        /* All your CSS stays exactly the same */
         * {
             margin: 0;
             padding: 0;
@@ -55,7 +54,42 @@
             font-size: 0.9rem;
         }
 
-        /* USER INFO */
+        .user-nav {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            display: flex;
+            gap: 10px;
+        }
+
+        .nav-btn {
+            background: rgba(71, 85, 105, 0.7);
+            border: 1px solid #475569;
+            color: #cbd5e1;
+            padding: 8px 15px;
+            border-radius: 20px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 0.9rem;
+            transition: all 0.3s ease;
+        }
+
+        .nav-btn:hover {
+            background: #475569;
+            transform: scale(1.05);
+        }
+
+        .favorites-count {
+            background: #ef4444;
+            color: white;
+            font-size: 0.7rem;
+            padding: 2px 6px;
+            border-radius: 10px;
+            margin-left: 5px;
+        }
+
         .user-info {
             position: absolute;
             top: 20px;
@@ -93,46 +127,6 @@
             color: #94a3b8;
         }
 
-        .user-nav {
-            position: absolute;
-            top: 20px;
-            right: 20px;
-            display: flex;
-            gap: 10px;
-        }
-
-        .nav-btn {
-            background: rgba(71, 85, 105, 0.7);
-            border: 1px solid #475569;
-            color: #cbd5e1;
-            padding: 8px 15px;
-            border-radius: 20px;
-            cursor: pointer;
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            font-size: 0.9rem;
-            transition: all 0.3s ease;
-        }
-
-        .nav-btn:hover {
-            background: #475569;
-            transform: scale(1.05);
-        }
-
-        .favorites-count {
-            background: #ef4444;
-            color: white;
-            font-size: 0.7rem;
-            padding: 2px 6px;
-            border-radius: 10px;
-            margin-left: 5px;
-        }
-
-        /* REST OF YOUR CSS STAYS EXACTLY THE SAME */
-        /* [Copy all your CSS here exactly as in your original] */
-
-        /* MAIN CONTAINER */
         .main-container {
             max-width: 1200px;
             margin: 0 auto;
@@ -821,8 +815,8 @@
             <button class="admin-tool-btn" onclick="showTrashBin()">
                 <i class="fas fa-trash"></i> Trash Bin
             </button>
-            <button class="admin-tool-btn" onclick="importFromGitHub()">
-                <i class="fab fa-github"></i> Import Images
+            <button class="admin-tool-btn" onclick="importWallpaperModal()">
+                <i class="fas fa-cloud-upload-alt"></i> Import Image
             </button>
         </div>
     </div>
@@ -952,17 +946,17 @@
         </div>
     </div>
 
-    <!-- IMAGE IMPORT MODAL -->
+    <!-- IMPORT MODAL -->
     <div class="download-overlay" id="importModal">
         <div class="download-modal">
             <h2 class="modal-title">
-                <i class="fab fa-github"></i> Add Wallpaper
+                <i class="fas fa-cloud-upload-alt"></i> Import Wallpaper
             </h2>
             <div class="admin-form">
                 <div class="form-group">
                     <label>Image URL</label>
-                    <input type="text" id="imageUrl" placeholder="https://example.com/image.jpg">
-                    <small style="color: #94a3b8;">Use direct image links (GitHub, Imgur, etc.)</small>
+                    <input type="text" id="imageUrl" placeholder="https://example.com/image.jpg" 
+                           value="https://images.unsplash.com/photo-">
                 </div>
                 <div class="form-group">
                     <label>Wallpaper Name</label>
@@ -979,7 +973,6 @@
                         <option value="Daily Saints">Daily Saints</option>
                         <option value="Bible Verses">Bible Verses</option>
                         <option value="Seasonal">Seasonal</option>
-                        <option value="Animated">Animated</option>
                     </select>
                 </div>
             </div>
@@ -1046,19 +1039,17 @@
         <p>© 2024 Holy Screen - Ethiopian Orthodox Wallpapers</p>
         <p><span id="totalDownloadsFooter">0</span> total downloads • <span id="totalWallpapers">0</span> wallpapers</p>
         <p style="font-size: 0.8rem; color: #475569; margin-top: 10px;">
-            Admin: ignivolatusapk@gmail.com • All changes are saved permanently
+            Admin: ignivolatusapk@gmail.com • All changes saved permanently
         </p>
     </footer>
 
     <script>
         // ============================================
-        // GLOBAL VARIABLES
+        // SIMPLE VERSION - NO COMPLEX STUFF
         // ============================================
         const ADMIN_EMAIL = "ignivolatusapk@gmail.com";
-        let currentUser = null;
-        let isAdmin = false;
         
-        // Default wallpapers with reliable URLs
+        // Sample wallpapers that WORK
         let wallpapers = [
             {
                 id: 1,
@@ -1071,12 +1062,11 @@
                 dateAdded: "2024-01-15",
                 isFavorite: false,
                 deleted: false,
-                deletedDate: null,
-                source: "unsplash"
+                deletedDate: null
             },
             {
                 id: 2,
-                name: "Saint Frumentius (Abba Selama)",
+                name: "Saint Frumentius",
                 url: "https://images.unsplash.com/photo-1589829545856-d10d557cf95f?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80",
                 category: "Ethiopian Saints",
                 description: "First bishop of Axum, brought Christianity to Ethiopia.",
@@ -1085,12 +1075,11 @@
                 dateAdded: "2024-01-20",
                 isFavorite: false,
                 deleted: false,
-                deletedDate: null,
-                source: "unsplash"
+                deletedDate: null
             },
             {
                 id: 3,
-                name: "Virgin Mary (St. Mary)",
+                name: "Virgin Mary",
                 url: "https://images.unsplash.com/photo-1543857778-c4a1a569e388?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80",
                 category: "Daily Saints",
                 description: "Mother of Jesus, highly venerated in Ethiopian Orthodoxy.",
@@ -1099,197 +1088,55 @@
                 dateAdded: "2024-01-10",
                 isFavorite: true,
                 deleted: false,
-                deletedDate: null,
-                source: "unsplash"
-            },
-            {
-                id: 4,
-                name: "Ethiopian Orthodox Cross",
-                url: "https://images.unsplash.com/photo-1518834103328-93d45986dce1?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80",
-                category: "Seasonal",
-                description: "Traditional Ethiopian Orthodox cross design.",
-                downloads: 1500,
-                favorites: 56,
-                dateAdded: "2024-01-05",
-                isFavorite: false,
-                deleted: false,
-                deletedDate: null,
-                source: "unsplash"
-            },
-            {
-                id: 5,
-                name: "Saint George & The Dragon",
-                url: "https://images.unsplash.com/photo-1534447677768-be436bb09401?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80",
-                category: "Ethiopian Saints",
-                description: "Saint George slaying the dragon, popular in Ethiopian art.",
-                downloads: 1300,
-                favorites: 41,
-                dateAdded: "2024-01-12",
-                isFavorite: false,
-                deleted: false,
-                deletedDate: null,
-                source: "unsplash"
-            },
-            {
-                id: 6,
-                name: "Psalm 23 - Amharic Calligraphy",
-                url: "https://images.unsplash.com/photo-1505765050516-f72dcac9c60e?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80",
-                category: "Bible Verses",
-                description: "Beautiful Amharic calligraphy of Psalm 23.",
-                downloads: 890,
-                favorites: 39,
-                dateAdded: "2024-01-18",
-                isFavorite: true,
-                deleted: false,
-                deletedDate: null,
-                source: "unsplash"
+                deletedDate: null
             }
         ];
 
         let categories = [
-            { id: 1, name: "Ethiopian Saints", icon: "fas fa-church", count: 25 },
-            { id: 2, name: "Daily Saints", icon: "fas fa-calendar-day", count: 365 },
-            { id: 3, name: "Bible Verses", icon: "fas fa-book-bible", count: 50 },
-            { id: 4, name: "Seasonal", icon: "fas fa-tree", count: 12 },
-            { id: 5, name: "Animated", icon: "fas fa-film", count: 8 },
-            { id: 6, name: "All Wallpapers", icon: "fas fa-star", count: 100 }
+            { id: 1, name: "Ethiopian Saints", icon: "fas fa-church", count: 2 },
+            { id: 2, name: "Daily Saints", icon: "fas fa-calendar-day", count: 1 },
+            { id: 3, name: "Bible Verses", icon: "fas fa-book-bible", count: 0 },
+            { id: 4, name: "Seasonal", icon: "fas fa-tree", count: 0 }
         ];
-
-        let featuredSaint = {
-            name: "Saint Tekle Haimanot",
-            description: "13th century Ethiopian saint, known for his devotion to prayer and healing miracles. Founder of Debre Libanos monastery.",
-            image: "https://images.unsplash.com/photo-1544376798-89aa6b82c6cd?ixlib=rb-4.0.3&auto=format&fit=crop&w=1200&q=80",
-            isFavorite: false,
-            wallpaperId: 1
-        };
 
         // Variables
         let currentWallpaperId = null;
         let wallpaperToDelete = null;
-        let isFeaturedFavorite = false;
+        let currentUser = null;
+        let isAdmin = false;
 
-        // ============================================
-        // USER DETECTION FROM URL
-        // ============================================
-        function getCurrentUser() {
-            // Check URL parameters first
+        // Initialize app
+        function initApp() {
+            // Check URL for user info
             const urlParams = new URLSearchParams(window.location.search);
-            const email = urlParams.get('email');
-            const name = urlParams.get('name');
+            const email = urlParams.get('email') || urlParams.get('user') || 'guest@example.com';
+            const name = urlParams.get('name') || 'Guest User';
             
-            if (email && name) {
-                const isAdminUser = email.toLowerCase() === ADMIN_EMAIL;
-                return {
-                    id: Date.now(),
-                    name: name,
-                    email: email,
-                    type: isAdminUser ? 'admin' : 'user',
-                    avatar: name.charAt(0).toUpperCase(),
-                    loginTime: new Date().toISOString()
-                };
-            }
-            
-            // Check if coming from login redirect
-            const hashParams = new URLSearchParams(window.location.hash.substring(1));
-            const hashEmail = hashParams.get('email');
-            const hashName = hashParams.get('name');
-            
-            if (hashEmail && hashName) {
-                const isAdminUser = hashEmail.toLowerCase() === ADMIN_EMAIL;
-                return {
-                    id: Date.now(),
-                    name: hashName,
-                    email: hashEmail,
-                    type: isAdminUser ? 'admin' : 'user',
-                    avatar: hashName.charAt(0).toUpperCase(),
-                    loginTime: new Date().toISOString()
-                };
-            }
-            
-            // Check localStorage
-            const savedUser = localStorage.getItem('holyScreen_currentUser');
-            if (savedUser) {
-                try {
-                    return JSON.parse(savedUser);
-                } catch (e) {
-                    console.error("Error parsing saved user:", e);
-                }
-            }
-            
-            // Default guest
-            return {
-                id: Date.now(),
-                name: "Guest",
-                email: "guest@example.com",
-                type: "user",
-                avatar: "G",
-                loginTime: new Date().toISOString()
+            currentUser = {
+                name: name,
+                email: email,
+                avatar: name.charAt(0).toUpperCase()
             };
-        }
-
-        function updateUserUI() {
-            if (!currentUser) return;
             
+            isAdmin = email.toLowerCase() === ADMIN_EMAIL.toLowerCase();
+            
+            // Update UI
             document.getElementById('userName').textContent = currentUser.name;
             document.getElementById('userEmail').textContent = currentUser.email;
             document.getElementById('userAvatar').textContent = currentUser.avatar;
             
             // Show admin button if admin
             if (isAdmin) {
+                document.getElementById('adminButton').style.display = 'flex';
                 document.getElementById('adminButton').classList.add('show-admin');
                 document.getElementById('featuredDeleteBtn').style.display = 'flex';
+                console.log("✅ ADMIN MODE ENABLED");
             }
             
-            // Save user to localStorage
-            localStorage.setItem('holyScreen_currentUser', JSON.stringify(currentUser));
-        }
-
-        // ============================================
-        // STORAGE FUNCTIONS
-        // ============================================
-        function saveAllData() {
-            try {
-                localStorage.setItem('holyScreen_wallpapers', JSON.stringify(wallpapers));
-                localStorage.setItem('holyScreen_categories', JSON.stringify(categories));
-                localStorage.setItem('holyScreen_featured', JSON.stringify(featuredSaint));
-                localStorage.setItem('holyScreen_lastSave', new Date().toISOString());
-                console.log("✅ All data saved to localStorage");
-            } catch (e) {
-                console.error("Storage error:", e);
-            }
-        }
-
-        function loadAllData() {
-            try {
-                const savedWallpapers = localStorage.getItem('holyScreen_wallpapers');
-                const savedCategories = localStorage.getItem('holyScreen_categories');
-                const savedFeatured = localStorage.getItem('holyScreen_featured');
-                
-                if (savedWallpapers) wallpapers = JSON.parse(savedWallpapers);
-                if (savedCategories) categories = JSON.parse(savedCategories);
-                if (savedFeatured) featuredSaint = JSON.parse(savedFeatured);
-                
-                console.log("✅ Loaded data from localStorage");
-            } catch (e) {
-                console.error("Load error:", e);
-            }
-        }
-
-        // ============================================
-        // INITIALIZATION
-        // ============================================
-        function initApp() {
-            // Get current user
-            currentUser = getCurrentUser();
-            isAdmin = currentUser.email.toLowerCase() === ADMIN_EMAIL;
+            // Load data from localStorage if exists
+            loadFromStorage();
             
-            // Update user UI
-            updateUserUI();
-            
-            // Load data
-            loadAllData();
-            
-            // Initialize app
+            // Render content
             renderCategories();
             renderWallpapers();
             updateFavoritesCount();
@@ -1298,592 +1145,61 @@
             // Show welcome message
             if (isAdmin) {
                 setTimeout(() => {
-                    console.log(`👑 Admin logged in: ${currentUser.name}`);
+                    alert(`👑 Welcome, ADMIN!\n\nEmail: ${email}\n\nAll changes you make will be saved permanently.`);
                 }, 1000);
             }
-            
-            console.log("✅ Holy Screen initialized!");
         }
 
         // ============================================
-        // IMAGE IMPORT FUNCTIONALITY
+        // BASIC FUNCTIONS
         // ============================================
-        function importFromGitHub() {
-            if (!isAdmin) {
-                alert("Only admin can import images!");
-                return;
-            }
-            document.getElementById('importModal').style.display = 'flex';
-            toggleAdminPanel();
-        }
-
-        function closeImportModal() {
-            document.getElementById('importModal').style.display = 'none';
-        }
-
-        function importWallpaper() {
-            if (!isAdmin) {
-                alert("Only admin can add wallpapers!");
-                closeImportModal();
-                return;
-            }
-            
-            const url = document.getElementById('imageUrl').value.trim();
-            const name = document.getElementById('wallpaperName').value.trim();
-            const description = document.getElementById('wallpaperDesc').value.trim();
-            const category = document.getElementById('wallpaperCategory').value;
-            
-            if (!url || !name) {
-                alert("Please enter both URL and name!");
-                return;
-            }
-            
-            // Validate URL
+        function loadFromStorage() {
             try {
-                new URL(url);
+                const saved = localStorage.getItem('holyScreen_data');
+                if (saved) {
+                    const data = JSON.parse(saved);
+                    if (data.wallpapers) wallpapers = data.wallpapers;
+                    if (data.categories) categories = data.categories;
+                    console.log("✅ Loaded from localStorage");
+                }
             } catch (e) {
-                alert("Please enter a valid URL!");
-                return;
+                console.log("No saved data found");
             }
-            
-            const newWallpaper = {
-                id: wallpapers.length + 1,
-                name: name,
-                url: url,
-                category: category,
-                description: description || "Added by admin",
-                downloads: 0,
-                favorites: 0,
-                dateAdded: new Date().toISOString().split('T')[0],
-                isFavorite: false,
-                deleted: false,
-                deletedDate: null,
-                source: "manual"
-            };
-            
-            wallpapers.push(newWallpaper);
-            
-            // Save to localStorage
-            saveAllData();
-            
-            // Update display
-            renderWallpapers();
-            updateFooterStats();
-            
-            closeImportModal();
-            alert(`✅ Wallpaper added!\n\nName: ${name}\nCategory: ${category}\n\nChanges are saved permanently.`);
         }
 
-        // ============================================
-        // DELETE FUNCTIONALITY
-        // ============================================
-        function deleteWallpaper(wallpaperId, event) {
-            if (event) event.stopPropagation();
-            
-            if (!isAdmin) {
-                alert("Only admin can delete wallpapers!");
-                return;
-            }
-            
-            const wallpaper = wallpapers.find(w => w.id === wallpaperId);
-            if (!wallpaper) return;
-            
-            wallpaperToDelete = wallpaperId;
-            
-            const deleteWarning = document.getElementById('deleteWarning');
-            deleteWarning.innerHTML = `
-                <p><strong>Are you sure you want to delete this wallpaper?</strong></p>
-                <p>"${wallpaper.name}"</p>
-                <p>Downloads: ${wallpaper.downloads} • Favorites: ${wallpaper.favorites}</p>
-                <p style="color: #fbbf24; font-size: 0.9rem;">
-                    <i class="fas fa-exclamation-triangle"></i> 
-                    ADMIN ACTION: This will be permanently saved.
-                </p>
-            `;
-            
-            document.getElementById('deleteModal').style.display = 'flex';
-        }
-
-        function confirmDelete() {
-            if (!wallpaperToDelete) return;
-            
-            if (!isAdmin) {
-                alert("Only admin can delete wallpapers!");
-                closeDeleteModal();
-                return;
-            }
-            
-            const index = wallpapers.findIndex(w => w.id === wallpaperToDelete);
-            if (index !== -1) {
-                wallpapers[index].deleted = true;
-                wallpapers[index].deletedDate = new Date().toISOString();
-                
-                // Save to localStorage
-                saveAllData();
-                
-                // Re-render wallpapers
-                renderWallpapers();
-                updateFooterStats();
-                
-                alert(`✅ Wallpaper moved to trash!\n\nChanges are saved permanently.`);
-            }
-            
-            closeDeleteModal();
-        }
-
-        function closeDeleteModal() {
-            document.getElementById('deleteModal').style.display = 'none';
-            wallpaperToDelete = null;
-        }
-
-        function deleteFeatured() {
-            if (!isAdmin) {
-                alert("Only admin can delete featured!");
-                return;
-            }
-            
-            if (confirm("Remove this saint from featured? This will be saved permanently.")) {
-                featuredSaint = {
-                    name: "No Featured Saint",
-                    description: "Select a new featured saint from the wallpapers.",
-                    image: "https://cdn-icons-png.flaticon.com/512/619/619153.png",
-                    isFavorite: false,
-                    wallpaperId: null
+        function saveToStorage() {
+            try {
+                const data = {
+                    wallpapers: wallpapers,
+                    categories: categories,
+                    lastSave: new Date().toISOString()
                 };
-                
-                // Update display
-                document.getElementById('featuredSaintName').textContent = featuredSaint.name;
-                document.getElementById('featuredSaintDescription').textContent = featuredSaint.description;
-                document.querySelector('.featured-image').src = featuredSaint.image;
-                
-                // Save to localStorage
-                saveAllData();
-                
-                alert("✅ Featured saint removed!\n\nChanges are saved permanently.");
+                localStorage.setItem('holyScreen_data', JSON.stringify(data));
+                console.log("✅ Saved to localStorage");
+            } catch (e) {
+                console.error("Save error:", e);
             }
-        }
-
-        // ============================================
-        // TRASH BIN FUNCTIONALITY
-        // ============================================
-        function showTrashBin() {
-            const modal = document.getElementById('trashBinModal');
-            const container = document.getElementById('trashBinContainer');
-            
-            const deletedWallpapers = wallpapers.filter(w => w.deleted);
-            
-            if (deletedWallpapers.length === 0) {
-                container.innerHTML = `
-                    <div class="empty-favorites">
-                        <i class="fas fa-trash"></i>
-                        <h3>Trash Bin is Empty</h3>
-                        <p>No wallpapers have been deleted yet</p>
-                    </div>
-                `;
-            } else {
-                container.innerHTML = `
-                    <div style="margin-bottom: 20px; color: #94a3b8;">
-                        <i class="fas fa-info-circle"></i> 
-                        ${deletedWallpapers.length} deleted wallpaper(s)
-                    </div>
-                    <div class="wallpapers-grid">
-                        ${deletedWallpapers.map(wallpaper => `
-                            <div class="wallpaper-card">
-                                ${isAdmin ? `
-                                    <div class="wallpaper-action-buttons">
-                                        <button class="wallpaper-delete-btn" onclick="permanentlyDeleteWallpaper(${wallpaper.id})">
-                                            <i class="fas fa-trash"></i>
-                                        </button>
-                                        <button class="wallpaper-delete-btn" onclick="restoreWallpaper(${wallpaper.id})" style="background: #10b981;">
-                                            <i class="fas fa-undo"></i>
-                                        </button>
-                                    </div>
-                                ` : ''}
-                                <img src="${wallpaper.url}" alt="${wallpaper.name}" class="wallpaper-image"
-                                     onerror="this.onerror=null;this.src='https://cdn-icons-png.flaticon.com/512/619/619153.png';">
-                                <div class="wallpaper-info">
-                                    <h4 class="wallpaper-name">${wallpaper.name}</h4>
-                                    <div class="wallpaper-stats">
-                                        <span><i class="fas fa-download"></i> ${wallpaper.downloads}</span>
-                                        <span><i class="fas fa-heart"></i> ${wallpaper.favorites}</span>
-                                    </div>
-                                    <div style="color: #ef4444; font-size: 0.8rem; margin-top: 5px;">
-                                        <i class="fas fa-calendar-times"></i> 
-                                        Deleted: ${new Date(wallpaper.deletedDate).toLocaleDateString()}
-                                    </div>
-                                </div>
-                            </div>
-                        `).join('')}
-                    </div>
-                `;
-            }
-            
-            modal.style.display = 'flex';
-            toggleAdminPanel();
-        }
-
-        function closeTrashBin() {
-            document.getElementById('trashBinModal').style.display = 'none';
-        }
-
-        function permanentlyDeleteWallpaper(wallpaperId) {
-            if (!isAdmin) {
-                alert("Only admin can permanently delete!");
-                return;
-            }
-            
-            if (!confirm("Permanently delete this wallpaper? This cannot be undone!")) {
-                return;
-            }
-            
-            const index = wallpapers.findIndex(w => w.id === wallpaperId);
-            if (index !== -1) {
-                wallpapers.splice(index, 1);
-                
-                // Save to localStorage
-                saveAllData();
-                
-                // Re-render trash bin
-                showTrashBin();
-                updateFooterStats();
-                
-                alert("✅ Wallpaper permanently deleted!\n\nChanges are saved permanently.");
-            }
-        }
-
-        function restoreWallpaper(wallpaperId) {
-            const index = wallpapers.findIndex(w => w.id === wallpaperId);
-            if (index !== -1) {
-                wallpapers[index].deleted = false;
-                wallpapers[index].deletedDate = null;
-                
-                // Save to localStorage
-                saveAllData();
-                
-                // Re-render trash bin
-                showTrashBin();
-                renderWallpapers();
-                updateFooterStats();
-                
-                alert("✅ Wallpaper restored!");
-            }
-        }
-
-        function emptyTrashBin() {
-            if (!isAdmin) {
-                alert("Only admin can empty trash!");
-                return;
-            }
-            
-            const deletedCount = wallpapers.filter(w => w.deleted).length;
-            
-            if (deletedCount === 0) {
-                alert("Trash bin is already empty!");
-                return;
-            }
-            
-            if (!confirm(`Permanently delete ALL ${deletedCount} wallpapers in trash? This cannot be undone!`)) {
-                return;
-            }
-            
-            wallpapers = wallpapers.filter(w => !w.deleted);
-            
-            // Save to localStorage
-            saveAllData();
-            
-            // Update displays
-            showTrashBin();
-            updateFooterStats();
-            
-            alert(`✅ Emptied trash bin! ${deletedCount} wallpapers permanently deleted.\n\nChanges are saved permanently.`);
-        }
-
-        function restoreAllFromTrash() {
-            const deletedCount = wallpapers.filter(w => w.deleted).length;
-            
-            if (deletedCount === 0) {
-                alert("No wallpapers to restore!");
-                return;
-            }
-            
-            wallpapers.forEach(w => {
-                if (w.deleted) {
-                    w.deleted = false;
-                    w.deletedDate = null;
-                }
-            });
-            
-            // Save to localStorage
-            saveAllData();
-            
-            // Update displays
-            showTrashBin();
-            renderWallpapers();
-            updateFooterStats();
-            
-            alert(`✅ Restored ${deletedCount} wallpapers from trash!`);
-        }
-
-        // ============================================
-        // EXISTING FUNCTIONALITY
-        // ============================================
-        function showDownloadModal(wallpaperId) {
-            currentWallpaperId = wallpaperId;
-            document.getElementById('downloadModal').style.display = 'flex';
-        }
-
-        function closeDownloadModal() {
-            document.getElementById('downloadModal').style.display = 'none';
-        }
-
-        function downloadWallpaper(type) {
-            if (currentWallpaperId) {
-                const wallpaper = wallpapers.find(w => w.id === currentWallpaperId);
-                if (wallpaper) {
-                    wallpaper.downloads += 1;
-                    
-                    // Save to localStorage
-                    saveAllData();
-                    
-                    // Update display
-                    renderWallpapers();
-                    updateFooterStats();
-                    
-                    // Simulate download
-                    simulateDownload(wallpaper, type);
-                }
-            }
-            closeDownloadModal();
-        }
-
-        function simulateDownload(wallpaper, type) {
-            const resolutions = {
-                'mobile': '1080x1920',
-                'tablet': '2048x2732', 
-                'desktop': '3840x2160'
-            };
-            
-            const link = document.createElement('a');
-            link.href = wallpaper.url;
-            link.download = `HolyScreen_${wallpaper.name.replace(/\s+/g, '_')}_${resolutions[type]}.jpg`;
-            
-            document.body.appendChild(link);
-            link.click();
-            document.body.removeChild(link);
-            
-            alert(`✅ Downloading "${wallpaper.name}" in ${resolutions[type]} resolution!\nTotal downloads: ${wallpaper.downloads}`);
-        }
-
-        function toggleFavorite(wallpaperId, event) {
-            if (event) event.stopPropagation();
-            
-            const wallpaper = wallpapers.find(w => w.id === wallpaperId);
-            if (wallpaper) {
-                wallpaper.isFavorite = !wallpaper.isFavorite;
-                wallpaper.favorites += wallpaper.isFavorite ? 1 : -1;
-                
-                // Save to localStorage
-                saveAllData();
-                
-                // Update display
-                renderWallpapers();
-                updateFavoritesCount();
-                
-                // Show notification
-                const action = wallpaper.isFavorite ? 'added to' : 'removed from';
-                alert(`✅ "${wallpaper.name}" ${action} favorites!`);
-            }
-        }
-
-        function toggleFeaturedFavorite() {
-            isFeaturedFavorite = !isFeaturedFavorite;
-            const btn = document.querySelector('.featured-actions .favorite-btn');
-            const icon = btn.querySelector('i');
-            
-            if (isFeaturedFavorite) {
-                btn.classList.add('favorited');
-                icon.className = 'fas fa-heart';
-                alert('✅ Featured saint added to favorites!');
-            } else {
-                btn.classList.remove('favorited');
-                icon.className = 'fas fa-heart';
-                alert('✅ Featured saint removed from favorites!');
-            }
-        }
-
-        function showFavorites() {
-            const modal = document.getElementById('favoritesModal');
-            const container = document.getElementById('favoritesContainer');
-            
-            const favoriteWallpapers = wallpapers.filter(w => w.isFavorite && !w.deleted);
-            
-            if (favoriteWallpapers.length === 0) {
-                container.innerHTML = `
-                    <div class="empty-favorites">
-                        <i class="fas fa-heart-broken"></i>
-                        <h3>No Favorites Yet</h3>
-                        <p>Tap the heart icon on wallpapers to add them to favorites</p>
-                    </div>
-                `;
-            } else {
-                container.innerHTML = `
-                    <div class="wallpapers-grid">
-                        ${favoriteWallpapers.map(wallpaper => `
-                            <div class="wallpaper-card" onclick="showDownloadModal(${wallpaper.id})">
-                                <button class="wallpaper-favorite-btn favorited" onclick="toggleFavorite(${wallpaper.id}, event);">
-                                    <i class="fas fa-heart"></i>
-                                </button>
-                                ${isAdmin ? `
-                                    <div class="wallpaper-action-buttons">
-                                        <button class="wallpaper-delete-btn" onclick="deleteWallpaper(${wallpaper.id}, event);">
-                                            <i class="fas fa-trash"></i>
-                                        </button>
-                                    </div>
-                                ` : ''}
-                                <img src="${wallpaper.url}" alt="${wallpaper.name}" class="wallpaper-image"
-                                     onerror="this.onerror=null;this.src='https://cdn-icons-png.flaticon.com/512/619/619153.png';">
-                                <div class="wallpaper-info">
-                                    <h4 class="wallpaper-name">${wallpaper.name}</h4>
-                                    <div class="wallpaper-stats">
-                                        <span><i class="fas fa-download"></i> ${wallpaper.downloads}</span>
-                                        <span><i class="fas fa-heart"></i> ${wallpaper.favorites}</span>
-                                    </div>
-                                    <div style="color: #64748b; font-size: 0.8rem; margin-top: 5px;">${wallpaper.category}</div>
-                                </div>
-                            </div>
-                        `).join('')}
-                    </div>
-                `;
-            }
-            
-            modal.style.display = 'flex';
-        }
-
-        function closeFavorites() {
-            document.getElementById('favoritesModal').style.display = 'none';
-        }
-
-        function downloadAllFavorites() {
-            const favoriteWallpapers = wallpapers.filter(w => w.isFavorite && !w.deleted);
-            if (favoriteWallpapers.length === 0) {
-                alert("No favorites to download!");
-                return;
-            }
-            
-            alert(`Downloading ${favoriteWallpapers.length} favorite wallpapers...\nThis may take a moment.`);
-            
-            // Simulate downloading each favorite
-            favoriteWallpapers.forEach(wallpaper => {
-                wallpaper.downloads += 1;
-            });
-            
-            saveAllData();
-            updateFooterStats();
-            
-            alert(`✅ All ${favoriteWallpapers.length} favorites downloaded!\nTotal downloads increased.`);
-        }
-
-        function updateFavoritesCount() {
-            const favoriteCount = wallpapers.filter(w => w.isFavorite && !w.deleted).length;
-            document.getElementById('favoritesCount').textContent = favoriteCount;
-        }
-
-        function updateFooterStats() {
-            const activeWallpapers = wallpapers.filter(w => !w.deleted);
-            const totalDownloads = activeWallpapers.reduce((sum, w) => sum + w.downloads, 0);
-            
-            document.getElementById('totalDownloadsFooter').textContent = totalDownloads.toLocaleString();
-            document.getElementById('totalWallpapers').textContent = activeWallpapers.length;
-        }
-
-        function toggleAdminPanel() {
-            if (!isAdmin) {
-                alert("Only admin can access admin panel!");
-                return;
-            }
-            
-            const panel = document.getElementById('adminPanel');
-            panel.classList.toggle('show');
-        }
-
-        function addNewWallpaper() {
-            if (!isAdmin) {
-                alert("Only admin can add wallpapers!");
-                toggleAdminPanel();
-                return;
-            }
-            
-            importFromGitHub();
-        }
-
-        function viewStatistics() {
-            if (!isAdmin) {
-                alert("Only admin can view statistics!");
-                toggleAdminPanel();
-                return;
-            }
-            
-            const activeWallpapers = wallpapers.filter(w => !w.deleted);
-            const deletedWallpapers = wallpapers.filter(w => w.deleted);
-            const totalDownloads = activeWallpapers.reduce((sum, w) => sum + w.downloads, 0);
-            const totalFavorites = activeWallpapers.reduce((sum, w) => sum + w.favorites, 0);
-            const mostDownloaded = activeWallpapers.reduce((prev, current) => 
-                (prev.downloads > current.downloads) ? prev : current, {name: "None", downloads: 0}
-            );
-            
-            const unsplashWallpapers = wallpapers.filter(w => w.source === 'unsplash').length;
-            const manualWallpapers = wallpapers.filter(w => w.source === 'manual').length;
-            
-            alert(`📊 Admin Statistics:\n\n` +
-                  `Active Wallpapers: ${activeWallpapers.length}\n` +
-                  `Deleted Wallpapers: ${deletedWallpapers.length}\n` +
-                  `Unsplash Wallpapers: ${unsplashWallpapers}\n` +
-                  `Manual Wallpapers: ${manualWallpapers}\n` +
-                  `Total Downloads: ${totalDownloads.toLocaleString()}\n` +
-                  `Total Favorites: ${totalFavorites}\n` +
-                  `Most Downloaded: ${mostDownloaded.name} (${mostDownloaded.downloads} downloads)\n` +
-                  `Admin Email: ${ADMIN_EMAIL}\n` +
-                  `Current User: ${currentUser.name}\n\n` +
-                  `All changes are saved permanently.`);
-            toggleAdminPanel();
         }
 
         function renderCategories() {
             const grid = document.getElementById('categoriesGrid');
-            grid.innerHTML = '';
-            
-            categories.forEach(category => {
-                const card = document.createElement('div');
-                card.className = 'category-card';
-                card.onclick = () => filterByCategory(category.name.toLowerCase().replace(/\s+/g, ''));
-                
-                card.innerHTML = `
+            grid.innerHTML = categories.map(cat => `
+                <div class="category-card" onclick="alert('Filtering ${cat.name}...')">
                     <div class="category-icon">
-                        <i class="${category.icon}"></i>
+                        <i class="${cat.icon}"></i>
                     </div>
-                    <div class="category-name">${category.name}</div>
-                    <div class="category-count">${category.count} wallpapers</div>
-                `;
-                
-                grid.appendChild(card);
-            });
+                    <div class="category-name">${cat.name}</div>
+                    <div class="category-count">${cat.count} wallpapers</div>
+                </div>
+            `).join('');
         }
 
         function renderWallpapers() {
             const grid = document.getElementById('wallpapersGrid');
-            grid.innerHTML = '';
-            
-            // Only show non-deleted wallpapers
             const activeWallpapers = wallpapers.filter(w => !w.deleted);
             
-            activeWallpapers.forEach(wallpaper => {
-                const categoryName = getCategoryName(wallpaper.category);
-                
-                const card = document.createElement('div');
-                card.className = 'wallpaper-card';
-                card.onclick = () => showDownloadModal(wallpaper.id);
-                
-                card.innerHTML = `
+            grid.innerHTML = activeWallpapers.map(wallpaper => `
+                <div class="wallpaper-card" onclick="showDownloadModal(${wallpaper.id})">
                     <button class="wallpaper-favorite-btn ${wallpaper.isFavorite ? 'favorited' : ''}" 
                             onclick="toggleFavorite(${wallpaper.id}, event);">
                         <i class="fas fa-heart"></i>
@@ -1903,38 +1219,433 @@
                             <span><i class="fas fa-download"></i> ${wallpaper.downloads}</span>
                             <span><i class="fas fa-heart"></i> ${wallpaper.favorites}</span>
                         </div>
-                        <div style="color: #64748b; font-size: 0.8rem; margin-top: 5px;">${categoryName}</div>
-                        <div style="color: #94a3b8; font-size: 0.7rem; margin-top: 3px;">
-                            ${wallpaper.source === 'unsplash' ? 'Unsplash' : 'Custom'}
-                        </div>
+                        <div style="color: #64748b; font-size: 0.8rem; margin-top: 5px;">${wallpaper.category}</div>
                     </div>
-                `;
-                
-                grid.appendChild(card);
-            });
+                </div>
+            `).join('');
         }
 
-        function getCategoryName(categoryCode) {
-            const category = categories.find(c => 
-                c.name.toLowerCase().replace(/\s+/g, '') === categoryCode.toLowerCase()
-            );
-            return category ? category.name : categoryCode;
+        // ============================================
+        // ADMIN FUNCTIONS
+        // ============================================
+        function toggleAdminPanel() {
+            if (!isAdmin) {
+                alert("Only admin can access admin panel!");
+                return;
+            }
+            document.getElementById('adminPanel').classList.toggle('show');
+        }
+
+        function addNewWallpaper() {
+            if (!isAdmin) {
+                alert("Only admin can add wallpapers!");
+                return;
+            }
+            importWallpaperModal();
+        }
+
+        function importWallpaperModal() {
+            if (!isAdmin) {
+                alert("Only admin can import!");
+                return;
+            }
+            document.getElementById('importModal').style.display = 'flex';
+            toggleAdminPanel();
+        }
+
+        function closeImportModal() {
+            document.getElementById('importModal').style.display = 'none';
+        }
+
+        function importWallpaper() {
+            if (!isAdmin) {
+                alert("Only admin can add wallpapers!");
+                closeImportModal();
+                return;
+            }
+            
+            const url = document.getElementById('imageUrl').value.trim();
+            const name = document.getElementById('wallpaperName').value.trim();
+            const desc = document.getElementById('wallpaperDesc').value.trim();
+            const category = document.getElementById('wallpaperCategory').value;
+            
+            if (!url || !name) {
+                alert("Please enter URL and name!");
+                return;
+            }
+            
+            const newWallpaper = {
+                id: wallpapers.length + 1,
+                name: name,
+                url: url,
+                category: category,
+                description: desc || "Added by admin",
+                downloads: 0,
+                favorites: 0,
+                dateAdded: new Date().toISOString().split('T')[0],
+                isFavorite: false,
+                deleted: false,
+                deletedDate: null
+            };
+            
+            wallpapers.push(newWallpaper);
+            saveToStorage();
+            renderWallpapers();
+            updateFooterStats();
+            closeImportModal();
+            
+            alert(`✅ Wallpaper added!\n\nChanges saved permanently.`);
+        }
+
+        function deleteWallpaper(id, event) {
+            if (event) event.stopPropagation();
+            
+            if (!isAdmin) {
+                alert("Only admin can delete!");
+                return;
+            }
+            
+            const wallpaper = wallpapers.find(w => w.id === id);
+            if (!wallpaper) return;
+            
+            wallpaperToDelete = id;
+            
+            document.getElementById('deleteWarning').innerHTML = `
+                <p><strong>Delete "${wallpaper.name}"?</strong></p>
+                <p>This action will be saved permanently.</p>
+            `;
+            
+            document.getElementById('deleteModal').style.display = 'flex';
+        }
+
+        function confirmDelete() {
+            if (!wallpaperToDelete) return;
+            
+            if (!isAdmin) {
+                alert("Only admin can delete!");
+                closeDeleteModal();
+                return;
+            }
+            
+            const index = wallpapers.findIndex(w => w.id === wallpaperToDelete);
+            if (index !== -1) {
+                wallpapers[index].deleted = true;
+                wallpapers[index].deletedDate = new Date().toISOString();
+                saveToStorage();
+                renderWallpapers();
+                updateFooterStats();
+                alert("✅ Deleted! Changes saved permanently.");
+            }
+            
+            closeDeleteModal();
+        }
+
+        function closeDeleteModal() {
+            document.getElementById('deleteModal').style.display = 'none';
+            wallpaperToDelete = null;
+        }
+
+        function deleteFeatured() {
+            if (!isAdmin) {
+                alert("Only admin can delete featured!");
+                return;
+            }
+            
+            if (confirm("Remove featured saint? This will be saved permanently.")) {
+                document.getElementById('featuredSaintName').textContent = "No Featured Saint";
+                document.getElementById('featuredSaintDescription').textContent = "Select a new featured saint.";
+                alert("✅ Featured removed! Changes saved.");
+            }
+        }
+
+        function showTrashBin() {
+            if (!isAdmin) {
+                alert("Only admin can view trash!");
+                return;
+            }
+            
+            const deleted = wallpapers.filter(w => w.deleted);
+            const container = document.getElementById('trashBinContainer');
+            
+            if (deleted.length === 0) {
+                container.innerHTML = `
+                    <div class="empty-favorites">
+                        <i class="fas fa-trash"></i>
+                        <h3>Trash Bin is Empty</h3>
+                    </div>
+                `;
+            } else {
+                container.innerHTML = `
+                    <div class="wallpapers-grid">
+                        ${deleted.map(w => `
+                            <div class="wallpaper-card">
+                                <div class="wallpaper-action-buttons">
+                                    <button class="wallpaper-delete-btn" onclick="permanentDelete(${w.id})">
+                                        <i class="fas fa-trash"></i>
+                                    </button>
+                                    <button class="wallpaper-delete-btn" onclick="restoreWallpaper(${w.id})" style="background: #10b981;">
+                                        <i class="fas fa-undo"></i>
+                                    </button>
+                                </div>
+                                <img src="${w.url}" alt="${w.name}" class="wallpaper-image">
+                                <div class="wallpaper-info">
+                                    <h4 class="wallpaper-name">${w.name}</h4>
+                                    <div style="color: #ef4444; font-size: 0.8rem;">
+                                        Deleted: ${new Date(w.deletedDate).toLocaleDateString()}
+                                    </div>
+                                </div>
+                            </div>
+                        `).join('')}
+                    </div>
+                `;
+            }
+            
+            document.getElementById('trashBinModal').style.display = 'flex';
+            toggleAdminPanel();
+        }
+
+        function closeTrashBin() {
+            document.getElementById('trashBinModal').style.display = 'none';
+        }
+
+        function permanentDelete(id) {
+            if (!confirm("Permanently delete? This cannot be undone!")) return;
+            
+            const index = wallpapers.findIndex(w => w.id === id);
+            if (index !== -1) {
+                wallpapers.splice(index, 1);
+                saveToStorage();
+                showTrashBin();
+                updateFooterStats();
+                alert("✅ Permanently deleted!");
+            }
+        }
+
+        function restoreWallpaper(id) {
+            const index = wallpapers.findIndex(w => w.id === id);
+            if (index !== -1) {
+                wallpapers[index].deleted = false;
+                wallpapers[index].deletedDate = null;
+                saveToStorage();
+                showTrashBin();
+                renderWallpapers();
+                updateFooterStats();
+                alert("✅ Wallpaper restored!");
+            }
+        }
+
+        function emptyTrashBin() {
+            const deleted = wallpapers.filter(w => w.deleted);
+            if (deleted.length === 0) {
+                alert("Trash is empty!");
+                return;
+            }
+            
+            if (!confirm(`Permanently delete ALL ${deleted.length} wallpapers in trash?`)) {
+                return;
+            }
+            
+            wallpapers = wallpapers.filter(w => !w.deleted);
+            saveToStorage();
+            showTrashBin();
+            updateFooterStats();
+            alert(`✅ Emptied trash! ${deleted.length} wallpapers deleted.`);
+        }
+
+        function restoreAllFromTrash() {
+            const deleted = wallpapers.filter(w => w.deleted);
+            if (deleted.length === 0) {
+                alert("No wallpapers to restore!");
+                return;
+            }
+            
+            wallpapers.forEach(w => {
+                if (w.deleted) {
+                    w.deleted = false;
+                    w.deletedDate = null;
+                }
+            });
+            
+            saveToStorage();
+            showTrashBin();
+            renderWallpapers();
+            updateFooterStats();
+            alert(`✅ Restored ${deleted.length} wallpapers!`);
+        }
+
+        function viewStatistics() {
+            if (!isAdmin) {
+                alert("Only admin can view stats!");
+                toggleAdminPanel();
+                return;
+            }
+            
+            const active = wallpapers.filter(w => !w.deleted);
+            const deleted = wallpapers.filter(w => w.deleted);
+            const downloads = active.reduce((sum, w) => sum + w.downloads, 0);
+            const favorites = active.reduce((sum, w) => sum + w.favorites, 0);
+            
+            alert(`📊 STATISTICS:\n\n` +
+                  `Active Wallpapers: ${active.length}\n` +
+                  `Deleted Wallpapers: ${deleted.length}\n` +
+                  `Total Downloads: ${downloads}\n` +
+                  `Total Favorites: ${favorites}\n` +
+                  `Admin: ${currentUser.email}\n\n` +
+                  `All changes are saved permanently.`);
+            toggleAdminPanel();
+        }
+
+        // ============================================
+        // USER FUNCTIONS
+        // ============================================
+        function showDownloadModal(id) {
+            currentWallpaperId = id;
+            document.getElementById('downloadModal').style.display = 'flex';
+        }
+
+        function closeDownloadModal() {
+            document.getElementById('downloadModal').style.display = 'none';
+        }
+
+        function downloadWallpaper(type) {
+            if (currentWallpaperId) {
+                const wallpaper = wallpapers.find(w => w.id === currentWallpaperId);
+                if (wallpaper) {
+                    wallpaper.downloads += 1;
+                    saveToStorage();
+                    renderWallpapers();
+                    updateFooterStats();
+                    
+                    // Create download link
+                    const link = document.createElement('a');
+                    link.href = wallpaper.url;
+                    link.download = `HolyScreen_${wallpaper.name.replace(/\s+/g, '_')}.jpg`;
+                    document.body.appendChild(link);
+                    link.click();
+                    document.body.removeChild(link);
+                    
+                    alert(`✅ Downloading "${wallpaper.name}"!\nDownloads: ${wallpaper.downloads}`);
+                }
+            }
+            closeDownloadModal();
+        }
+
+        function toggleFavorite(id, event) {
+            if (event) event.stopPropagation();
+            
+            const wallpaper = wallpapers.find(w => w.id === id);
+            if (wallpaper) {
+                wallpaper.isFavorite = !wallpaper.isFavorite;
+                wallpaper.favorites += wallpaper.isFavorite ? 1 : -1;
+                saveToStorage();
+                renderWallpapers();
+                updateFavoritesCount();
+                
+                const action = wallpaper.isFavorite ? 'added to' : 'removed from';
+                alert(`✅ "${wallpaper.name}" ${action} favorites!`);
+            }
+        }
+
+        function toggleFeaturedFavorite() {
+            const btn = document.querySelector('.featured-actions .favorite-btn');
+            const isFav = btn.classList.contains('favorited');
+            
+            if (isFav) {
+                btn.classList.remove('favorited');
+                alert('✅ Featured removed from favorites!');
+            } else {
+                btn.classList.add('favorited');
+                alert('✅ Featured added to favorites!');
+            }
+        }
+
+        function showFavorites() {
+            const favorites = wallpapers.filter(w => w.isFavorite && !w.deleted);
+            const container = document.getElementById('favoritesContainer');
+            
+            if (favorites.length === 0) {
+                container.innerHTML = `
+                    <div class="empty-favorites">
+                        <i class="fas fa-heart-broken"></i>
+                        <h3>No Favorites Yet</h3>
+                        <p>Tap ❤ on wallpapers to add them</p>
+                    </div>
+                `;
+            } else {
+                container.innerHTML = `
+                    <div class="wallpapers-grid">
+                        ${favorites.map(w => `
+                            <div class="wallpaper-card" onclick="showDownloadModal(${w.id})">
+                                <button class="wallpaper-favorite-btn favorited" onclick="toggleFavorite(${w.id}, event);">
+                                    <i class="fas fa-heart"></i>
+                                </button>
+                                <img src="${w.url}" alt="${w.name}" class="wallpaper-image">
+                                <div class="wallpaper-info">
+                                    <h4 class="wallpaper-name">${w.name}</h4>
+                                    <div class="wallpaper-stats">
+                                        <span><i class="fas fa-download"></i> ${w.downloads}</span>
+                                        <span><i class="fas fa-heart"></i> ${w.favorites}</span>
+                                    </div>
+                                </div>
+                            </div>
+                        `).join('')}
+                    </div>
+                `;
+            }
+            
+            document.getElementById('favoritesModal').style.display = 'flex';
+        }
+
+        function closeFavorites() {
+            document.getElementById('favoritesModal').style.display = 'none';
+        }
+
+        function downloadAllFavorites() {
+            const favorites = wallpapers.filter(w => w.isFavorite && !w.deleted);
+            if (favorites.length === 0) {
+                alert("No favorites to download!");
+                return;
+            }
+            
+            alert(`Downloading ${favorites.length} favorites...`);
+            
+            favorites.forEach(w => {
+                w.downloads += 1;
+            });
+            
+            saveToStorage();
+            updateFooterStats();
+            alert(`✅ All ${favorites.length} favorites downloaded!`);
         }
 
         function setAsWallpaper() {
-            alert('Setting as wallpaper...\n(In real app, this would apply the wallpaper)');
+            alert("Setting as wallpaper...\n(In real app, this would apply the wallpaper)");
         }
 
-        function filterByCategory(category) {
-            alert(`Filtering by ${category}...\n(In real app, this would filter the wallpapers)`);
+        // ============================================
+        // UTILITY FUNCTIONS
+        // ============================================
+        function updateFavoritesCount() {
+            const count = wallpapers.filter(w => w.isFavorite && !w.deleted).length;
+            document.getElementById('favoritesCount').textContent = count;
         }
 
-        // Initialize the app when page loads
+        function updateFooterStats() {
+            const active = wallpapers.filter(w => !w.deleted);
+            const downloads = active.reduce((sum, w) => sum + w.downloads, 0);
+            
+            document.getElementById('totalDownloadsFooter').textContent = downloads.toLocaleString();
+            document.getElementById('totalWallpapers').textContent = active.length;
+        }
+
+        // ============================================
+        // INITIALIZE APP
+        // ============================================
         window.onload = function() {
             initApp();
         };
 
-        // Close modal when clicking outside
+        // Close modals when clicking outside
         document.addEventListener('click', function(e) {
             const modals = ['downloadModal', 'favoritesModal', 'deleteModal', 'trashBinModal', 'importModal'];
             modals.forEach(modalId => {
@@ -1945,7 +1656,7 @@
             });
         });
 
-        // Close modal with ESC key
+        // Close with ESC key
         document.addEventListener('keydown', function(e) {
             if (e.key === 'Escape') {
                 document.getElementById('downloadModal').style.display = 'none';
